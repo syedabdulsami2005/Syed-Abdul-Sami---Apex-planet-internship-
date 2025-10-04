@@ -1,0 +1,62 @@
+________________________________________
+🔐 Cybersecurity Basics: The Essentials
+🧠 The CIA Triad – Your Security Compass
+This trio—Confidentiality, Integrity, and Availability—is the backbone of cybersecurity. Think of it as your guiding star when protecting data.
+•	Confidentiality: Keep secrets secret. Only the right people should see sensitive info. 
+o	Example: Your password is encrypted so even the website admin can’t peek.
+•	Integrity: Make sure data stays accurate and untouched. 
+o	Example: You download a file and check its hash to confirm it wasn’t tampered with.
+•	Availability: Keep systems up and running when needed. 
+o	Example: A website should be online for customers. A DDoS attack tries to knock it offline.
+________________________________________
+🕵️‍♂️ Common Attack Types – Know Your Enemy
+•	Phishing: Fake emails or messages trick you into giving up personal info. 
+o	Example: A bogus Netflix email asking for your card details.
+•	Malware: Malicious software like viruses, worms, trojans, or ransomware.
+•	DDoS: Flooding a server with traffic so real users can’t get through.
+•	SQL Injection: Sneaky code in a search bar that tricks the database into spilling secrets.
+•	Brute Force: Guessing passwords by trying every combo possible.
+•	Ransomware: Locks your files and demands payment to unlock them.
+________________________________________
+🛣️ Attack Vectors – How Hackers Get In
+•	Social Engineering: Manipulating people into giving up info. Phishing is one example.
+•	Wireless Attacks: Breaking into Wi-Fi networks.
+•	Insider Threats: When someone inside the company misuses their access.
+_______________________________________
+________________________________________
+🌐 Networking Basics – How Devices Talk
+🧱 OSI Model – 7 Layers of Communication
+1.	Physical: Cables, hardware.
+2.	Data Link: MAC addresses, switches.
+3.	Network: IP addresses, routers.
+4.	Transport: TCP/UDP – reliable vs fast.
+5.	Session: Manages ongoing connections.
+6.	Presentation: Formats/encrypts data.
+7.	Application: What you interact with (e.g., browser, FTP).
+🔗 TCP/IP – What the Internet Actually Uses
+•	TCP: Reliable, like a phone call. Used for web and email.
+•	UDP: Fast but unreliable, like a postcard. Used for games and streaming.
+•	HTTP/HTTPS: Web traffic protocols. HTTPS adds encryption.
+🧮 IP Addressing, Subnetting & NAT
+•	IP Address: Like a digital home address.
+•	Subnetting: Breaks big networks into smaller ones.
+•	NAT: Lets multiple devices share one public IP—your router handles this.
+________________________________________
+🤫 Cryptography Basics – Locking Down Data
+•	Symmetric Encryption: One key for both locking and unlocking. Fast but tricky to share securely.
+•	Asymmetric Encryption: Public key to lock, private key to unlock. Safer for sharing.
+•	Hashing: One-way fingerprint of data. Used for verifying integrity. 
+o	Example: SHA256 is secure; MD5 is outdated.
+🔐 Digital Certificates & SSL/TLS
+•	Digital Certificate: Proves a website is legit—issued by a trusted authority.
+•	SSL/TLS: Protocols that encrypt your connection. That’s the “S” in HTTPS.
+🛠 OpenSSL – Hands-On Crypto
+•	Use it in Kali Linux to generate keys, encrypt files, and create hashes. It’s your command-line crypto toolkit.
+________________________________________
+🛠 Tool Familiarization – Your Cyber Arsenal
+•	Wireshark: Captures and analyzes network traffic. Like watching every letter pass through the post office.
+•	Nmap: Scans networks to find devices, open ports, and services.
+•	Burp Suite: Intercepts web traffic so you can test for vulnerabilities.
+•	Netcat: A versatile tool for debugging, file transfers, and even creating chat servers.
+________________________________________
+

@@ -1,0 +1,20 @@
+🐧 Linux Fundamentals – Your Cyber Playground
+📁 Navigating the File System
+•	pwd: Shows where you are.
+•	ls: Lists files. Add -la to see hidden ones and details.
+•	cd: Move between folders. cd .. goes up one level.
+🔐 Permissions & Ownership
+•	chmod: Change who can read/write/execute a file. 
+o	Example: chmod +x script.sh makes it runnable.
+•	chown: Change who owns a file. 
+o	Example: chown user:user somefile.txt
+📦 Package Management
+•	apt: Install/update software on Debian-based systems. 
+o	sudo apt update → refresh package list.
+o	sudo apt install nmap → install Nmap.
+•	dpkg: Lower-level tool for managing .deb files.
+🌐 Networking Commands
+•	ifconfig / ip addr: Check your IP and network interfaces.
+•	ping: Test if a site is reachable.
+•	netstat: See active connections and listening ports.
+•	traceroute: Track the path your data takes across the internet.
