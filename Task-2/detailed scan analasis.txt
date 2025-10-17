@@ -1,0 +1,101 @@
+# Vulnerability Assessment Report for Metasploitable2
+
+**Author:** Syed Abdul Sami
+**Date of Assessment:** October 17, 2025
+**Target:** Metasploitable2 Test VM
+**IP Address:** `192.168.1.5`
+
+---
+
+### 1. Executive Summary
+
+This report outlines the findings of a vulnerability assessment conducted on the Metasploitable2 virtual machine. The assessment utilized port scanning with **Nmap** for service discovery and comprehensive vulnerability analysis with **OpenVAS (GVM)**.
+
+The scan revealed **numerous critical and high-severity vulnerabilities**, rendering the system extremely insecure. Key findings include the presence of services with known backdoors, widespread use of default and weak credentials, and outdated software susceptible to remote code execution. The target system is considered fully compromisable, and immediate remediation is required in a real-world scenario.
+
+---
+
+### 2. Scope & Methodology
+
+#### Scope
+* **In-Scope Target:** The assessment was limited to the Metasploitable2 virtual machine running at the IP address specified above.
+* **Assessment Type:** Unauthenticated (Black Box) network-based vulnerability scan.
+
+#### Methodology
+1.  **Host Discovery & Port Scanning:** An initial scan was performed using **Nmap** to identify live services, open ports, and running software versions.
+    * `nmap -sV -sC -oN reports/nmap/initial_scan.txt 192.168.1.5`
+2.  **Vulnerability Scanning:** The target was scanned using **OpenVAS (GVM)** with the "Full and Fast" scan configuration to identify known vulnerabilities based on the discovered services.
+3.  **Analysis & Reporting:** The results from both Nmap and OpenVAS were aggregated and analyzed to identify the most critical risks and their potential impact.
+
+---
+
+### 3. Findings Summary
+
+The scan identified a total of [e.g., 45] vulnerabilities, which are categorized by severity below.
+
+| Severity | Count | Description                                      |
+| :------- | :---- | :----------------------------------------------- |
+| **Critical** | **[e.g., 5]** | Vulnerabilities leading to direct system compromise. |
+| **High** | **[e.g., 12]** | Flaws that can be exploited for remote code execution or privilege escalation. |
+| **Medium** | **[e.g., 20]** | Issues that expose sensitive information or weaken system security. |
+| **Low** | **[e.g., 8]** | Minor issues and best-practice recommendations. |
+
+---
+
+### 4. Detailed Vulnerability Analysis
+
+Below are the most critical vulnerabilities discovered during the assessment.
+
+#### 4.1 [CRITICAL] VSFTPD v2.3.4 Backdoor Command Execution
+* **CVE:** `CVE-2011-2523`
+* **Description:** The version of VSFTPD (Very Secure FTP Daemon) running on port 21 contains a malicious backdoor that was added to the source code. An attacker can exploit this by sending a specific string `:)` in the username field, which opens a command shell on port 6200.
+* **Evidence:**
+    * Nmap identified `vsftpd 2.3.4` running on port `21/tcp`.
+    * OpenVAS flagged this with the "VSFTPD Backdoor" NVT (Network Vulnerability Test).
+* **Impact:** This vulnerability allows an unauthenticated attacker to gain **root-level remote access** to the server, resulting in a complete system compromise.
+* **Recommendation:** Immediately stop and disable the VSFTPD service. If an FTP server is required, upgrade to a patched, official version of the software.
+
+#### 4.2 [CRITICAL] UnrealIRCd Backdoor Command Execution
+* **CVE:** `CVE-2010-1325`
+* **Description:** The Unreal IRC daemon running on port `6667/tcp` is a trojanized version that contains a backdoor. An attacker can execute arbitrary commands by sending a specific sequence of characters (`AB;` followed by the command) to the server.
+* **Evidence:**
+    * Nmap identified `UnrealIRCd` on port `6667/tcp`.
+    * OpenVAS flagged this as "UnrealIRCd Backdoor Detection". The vulnerability allows for remote command injection.
+* **Impact:** Similar to the VSFTPD backdoor, this allows for **unauthenticated remote code execution**, leading to a full compromise of the system.
+* **Recommendation:** The vulnerable service should be removed and replaced with an official, secure version if an IRC server is necessary.
+
+#### 4.3 [HIGH] Default Login Credentials for PostgreSQL
+* **CVE:** `N/A` (Misconfiguration)
+* **Description:** The PostgreSQL database service running on port `5432/tcp` is accessible over the network and is configured with a default username (`postgres`) and a weak, predictable password (`postgres`).
+* **Evidence:**
+    * Nmap identified the PostgreSQL service on port `5432/tcp`.
+    * OpenVAS successfully authenticated to the database using the default credentials.
+* **Impact:** An attacker can gain full administrative access to the database, allowing them to read, modify, or delete any data stored within it. This could lead to a severe data breach.
+* **Recommendation:** Change the default password for the `postgres` user to a strong, unique password. Enforce a strong password policy for all database users. Restrict network access to the database port using a firewall.
+
+---
+
+### 5. Recommendations & Remediation Plan
+
+The Metasploitable2 system is critically insecure and should not be exposed to any untrusted network. The following remediation steps should be taken, prioritized by severity:
+
+1.  **Immediate Actions (Critical Risks):**
+    * Remove or update the backdoored `vsftpd` and `UnrealIRCd` services.
+    * Change all default credentials, especially for PostgreSQL (`postgres:postgres`), Tomcat (`tomcat:tomcat`), and the root user (`root:toor`).
+
+2.  **Secondary Actions (High Risks):**
+    * Apply all available security patches for the operating system and installed services (e.g., Apache, Samba, BIND).
+    * Disable any unnecessary services to reduce the attack surface.
+
+3.  **General Hardening:**
+    * Implement a host-based firewall (like `ufw`) to restrict access to only essential ports.
+    * Enforce a strong password policy across the system.
+
+---
+
+### 6. Appendix: Raw Scan Reports
+
+The raw output files from the scanning tools are located in the `/reports` directory of this repository.
+
+* **Nmap Scan:** `/reports/nmap/initial_scan.txt`
+* **OpenVAS Report:** `/reports/openvas/scan_report.pdf` (Export the report from GVM as a PDF and add it here)
