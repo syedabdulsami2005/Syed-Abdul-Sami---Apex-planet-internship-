@@ -1,0 +1,59 @@
+
+
+# Web Application Security: Attack Scenarios & Mitigations
+
+This repository contains demonstrations of common web application vulnerabilities and their corresponding mitigation techniques, based on the OWASP Top 10.
+
+## 1. SQL Injection (SQLi)
+
+* **Attack Scenarios:**
+    * Used SQL injection techniques to bypass authentication.
+    * Successfully extracted sensitive data, including usernames and passwords, from the database.
+* **Mitigation Notes:**
+    * Implemented **Prepared Statements** (also known as Parameterized Queries). This method separates the SQL command logic from the user-supplied data, ensuring that user input is always treated as data and never as executable code.
+
+## 2. Cross-Site Scripting (XSS)
+
+* **Attack Scenarios:**
+    * **Stored XSS:** Injected a malicious script into the application, which was then permanently stored (e.g., in a comments section or user profile). This script executed in the browser of any user who viewed the compromised page.
+    * **Reflected XSS:** Crafted a URL containing a malicious script (e.g., in a query parameter) and tricked a user into clicking it. The script was reflected off the web application to the user's browser, where it executed.
+* **Mitigation Notes:**
+    * **Input Validation:** Implemented strict server-side validation to sanitize and validate all user input, filtering out malicious characters and script tags.
+    * **Content Security Policy (CSP):** Deployed a strong CSP header to control which resources (scripts, images, etc.) are allowed to be loaded on the page, effectively blocking inline scripts and requests from untrusted domains.
+
+## 3. Cross-Site Request Forgery (CSRF)
+
+* **Attack Scenario:**
+    * Created a malicious webpage that, when visited by an authenticated user, automatically submitted a forged request to the target application (DVWA).
+    * This attack successfully changed the logged-in user's password without their consent or knowledge.
+* **Mitigation Notes:**
+    * **Token-Based Protection:** Implemented anti-CSRF tokens. The application now generates a unique, secret token for each user session. This token must be included in any state-changing request (like changing a password), and the server validates it before executing the action.
+
+## 4. File Inclusion Attacks
+
+* **Attack Scenarios:**
+    * **Local File Inclusion (LFI):** Exploited a vulnerable file inclusion parameter to traverse the server's directory and read sensitive files, such as `/etc/passwd`.
+    * **Remote File Inclusion (RFI):** Exploited the vulnerability to make the server fetch and execute a malicious script hosted on an external, attacker-controlled server.
+* **Mitigation Notes:**
+    * **Input Validation & Whitelisting:** Implemented a strict whitelist of acceptable file names and paths. All other input is rejected.
+    * **Disable Remote Inclusion:** Configured the server (e.g., `php.ini`) to disable `allow_url_include`, preventing the RFI attack vector entirely.
+
+## 5. Burp Suite Advanced
+
+* **Attack Scenarios:**
+    * **Intercept & Modify:** Used Burp Proxy to intercept a legitimate login request. Modified the request parameters (e.g., changing the username or password) before forwarding it to the server to test for vulnerabilities.
+    * **Fuzzing with Intruder:** Used Burp Intruder to perform a fuzzing attack on the login form. This automated attack tested thousands of common password combinations to identify weak credentials.
+* **Mitigation Notes:**
+    * **Rate Limiting & Account Lockouts:** Implemented rate limiting to block IPs that make too many failed login attempts. Enforced account lockout policies after a set number of failed attempts to frustrate automated fuzzing.
+    * **Strong Password Policy:** Enforce a complex password policy to make automated attacks less likely to succeed.
+
+## 6. Web Security Headers
+
+* **Attack Scenario:**
+    * Analyzed a test site using `securityheaders.com` and found it was missing critical HTTP security headers. This absence exposes the site to various attacks like clickjacking, code injection, and information sniffing.
+* **Mitigation Notes:**
+    * **Added Proper HTTP Headers:** Modified the Apache server configuration (`.htaccess` or `httpd.conf`) to include essential security headers:
+        * `Strict-Transport-Security (HSTS)`: Enforces HTTPS.
+        * `X-Content-Type-Options`: Prevents MIME-sniffing.
+        * `X-Frame-Options`: Protects against clickjacking.
+        * `Content-Security-Policy (CSP)`: (As noted in XSS) Restricts resource loading.
